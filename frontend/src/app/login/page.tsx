@@ -33,7 +33,11 @@ export default function LoginPage() {
         router.push("/dashboard");
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || "Invalid credentials.");
+      if (!err.response) {
+        setError("Network Error: Cannot connect to the server. Please make sure NEXT_PUBLIC_API_URL is set correctly in Vercel.");
+      } else {
+        setError(err.response?.data?.message || "Invalid credentials.");
+      }
     } finally {
       setLoading(false);
     }
