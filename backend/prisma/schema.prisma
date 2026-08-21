@@ -61,6 +61,7 @@ model Store {
   name      String
   contactDetails  String?
   monthlyRent     Float?
+  status          String   @default("ACTIVE")
   branches  Branch[]
   users     User[]
   sales     Sale[]

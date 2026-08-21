@@ -23,7 +23,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       email: s.users[0]?.email || 'N/A',
       contactDetails: s.contactDetails || 'N/A',
       monthlyRent: s.monthlyRent || 0,
-      status: s.users[0]?.status || 'ACTIVE'
+      status: s.status
     }));
 
     res.json({ success: true, data: stores });
@@ -77,9 +77,22 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         email: user.email,
         contactDetails: store.contactDetails,
         monthlyRent: store.monthlyRent,
-        status: user.status
+        status: store.status
       } 
     });
+  } catch (error) { next(error); }
+});
+
+// Toggle store status
+router.put('/:id/status', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const updatedStore = await prisma.store.update({
+      where: { id },
+      data: { status }
+    });
+    res.json({ success: true, data: updatedStore });
   } catch (error) { next(error); }
 });
 

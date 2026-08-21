@@ -112,6 +112,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="space-y-2">
             <div className="px-3 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Overview</div>
             <NavItem label="Dashboard" path="/dashboard" icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>} />
+            <NavItem label="Messages" path="/dashboard/messages" icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>} />
           </div>
 
           {(hasPermission('products.view') || hasPermission('inventory.view')) && (

@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import authRoutes from './routes/auth.routes';
+import messageRoutes from './routes/message.routes';
 import catalogRoutes from './routes/catalog.routes';
 import inventoryRoutes from './routes/inventory.routes';
 import uploadRoutes from './routes/upload.routes';
@@ -34,6 +35,7 @@ app.get('/api/v1/health', (req, res) => {
 
 // Routes
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/messages', messageRoutes);
 app.use('/api/v1/catalog', catalogRoutes);
 app.use('/api/v1/inventory', inventoryRoutes);
 app.use('/api/v1/upload', uploadRoutes);

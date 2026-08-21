@@ -7,11 +7,15 @@ export class AuthService {
   static async login(email: string, password: string) {
     const user = await prisma.user.findUnique({
       where: { email },
-      include: { role: true }
+      include: { role: true, store: true }
     });
 
     if (!user || user.status !== 'ACTIVE') {
       throw { statusCode: 401, message: 'Invalid credentials or inactive account' };
+    }
+
+    if (user.store && user.store.status === 'INACTIVE') {
+      throw { statusCode: 401, message: 'This store has been deactivated. Please contact the administrator.' };
     }
 
     const isMatch = await comparePassword(password, user.password);

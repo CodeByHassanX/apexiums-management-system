@@ -15,6 +15,17 @@ export default function StoresPage() {
     fetchStores();
   }, []);
 
+  const toggleStoreStatus = async (id: string, currentStatus: string) => {
+    try {
+      const newStatus = currentStatus === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+      await api.put(`/tenants/${id}/status`, { status: newStatus });
+      fetchStores();
+    } catch (error) {
+      console.error(error);
+      alert('Failed to update status');
+    }
+  };
+
   const fetchStores = async () => {
     try {
       const res = await api.get('/stores');
@@ -77,7 +88,14 @@ export default function StoresPage() {
                 <td className="px-6 py-4 text-sm text-gray-600">{store.contactDetails}</td>
                 <td className="px-6 py-4 text-sm text-gray-600">{store.monthlyRent ? `$${store.monthlyRent}` : 'N/A'}</td>
                 <td className="px-6 py-4 text-sm text-[#12b4a3] font-medium">{store.email}</td>
-                <td className="px-6 py-4"><span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold">{store.status}</span></td>
+                <td className="px-6 py-4">
+                  <button 
+                    onClick={() => toggleStoreStatus(store.id, store.status)}
+                    className={`text-xs px-3 py-1.5 rounded-full font-bold transition-all shadow-sm active:scale-95 ${store.status === 'ACTIVE' ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200'}`}
+                  >
+                    {store.status === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE'}
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
