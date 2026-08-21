@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorHandler = void 0;
-const express_1 = require("express");
 const zod_1 = require("zod");
 const errorHandler = (err, req, res, next) => {
     console.error(err);

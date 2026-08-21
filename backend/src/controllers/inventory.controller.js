@@ -1,10 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InventoryController = void 0;
-const express_1 = require("express");
 const inventory_service_1 = require("../services/inventory.service");
 const inventory_validator_1 = require("../validators/inventory.validator");
-const auth_middleware_1 = require("../middleware/auth.middleware");
 class InventoryController {
     static async getBranches(req, res, next) {
         try {

@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryController = void 0;
-const express_1 = require("express");
 const category_service_1 = require("../services/category.service");
 const catalog_validator_1 = require("../validators/catalog.validator");
 class CategoryController {

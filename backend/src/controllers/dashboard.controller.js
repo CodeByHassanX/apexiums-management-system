@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DashboardController = void 0;
-const express_1 = require("express");
 const dashboard_service_1 = require("../services/dashboard.service");
-const auth_middleware_1 = require("../middleware/auth.middleware");
 class DashboardController {
     static async getDashboardData(req, res, next) {
         try {

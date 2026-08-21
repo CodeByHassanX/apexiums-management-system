@@ -15,6 +15,23 @@ interface CheckoutPayload {
 }
 export declare class POSService {
     static checkout(payload: CheckoutPayload): Promise<{
+        items: {
+            id: string;
+            saleId: string;
+            productId: string;
+            quantity: number;
+            sellingPrice: import("@prisma/client/runtime/library").Decimal;
+            tax: import("@prisma/client/runtime/library").Decimal;
+            discount: import("@prisma/client/runtime/library").Decimal;
+        }[];
+        payments: {
+            id: string;
+            saleId: string;
+            method: string;
+            amount: import("@prisma/client/runtime/library").Decimal;
+            createdAt: Date;
+        }[];
+    } & {
         id: string;
         customerId: string | null;
         userId: string;

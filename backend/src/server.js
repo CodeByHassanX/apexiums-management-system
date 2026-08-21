@@ -47,7 +47,10 @@ app.use('/api/v1/staff', staff_routes_1.default);
 app.use('/api/v1/stores', tenant_routes_1.default);
 // Global Error Handler
 app.use(error_middleware_1.errorHandler);
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
+exports.default = app;
 //# sourceMappingURL=server.js.map

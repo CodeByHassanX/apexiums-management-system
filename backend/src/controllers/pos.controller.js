@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.POSController = void 0;
-const express_1 = require("express");
 const pos_service_1 = require("../services/pos.service");
-const auth_middleware_1 = require("../middleware/auth.middleware");
 class POSController {
     static async checkout(req, res, next) {
         try {

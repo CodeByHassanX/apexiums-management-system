@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BrandController = void 0;
-const express_1 = require("express");
 const brand_service_1 = require("../services/brand.service");
 const catalog_validator_1 = require("../validators/catalog.validator");
 class BrandController {

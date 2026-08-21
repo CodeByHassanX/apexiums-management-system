@@ -1,10 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
-const express_1 = require("express");
 const auth_service_1 = require("../services/auth.service");
 const auth_validator_1 = require("../validators/auth.validator");
-const auth_middleware_1 = require("../middleware/auth.middleware");
 class AuthController {
     static async login(req, res, next) {
         try {
