@@ -59,6 +59,8 @@ model RolePermission {
 model Store {
   id        String   @id @default(uuid())
   name      String
+  contactDetails  String?
+  monthlyRent     Float?
   branches  Branch[]
   users     User[]
   sales     Sale[]
@@ -330,3 +332,4 @@ model AuditLog {
   store       Store?    @relation(fields: [storeId], references: [id])
   user        User     @relation(fields: [userId], references: [id])
 }
+

@@ -21,6 +21,8 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       name: s.name,
       owner: s.users[0]?.name || 'N/A',
       email: s.users[0]?.email || 'N/A',
+      contactDetails: s.contactDetails || 'N/A',
+      monthlyRent: s.monthlyRent || 0,
       status: s.users[0]?.status || 'ACTIVE'
     }));
 
@@ -31,7 +33,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 // Create a new store (creates an ADMIN user)
 router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let { name, owner, email, password } = req.body;
+    let { name, owner, email, password, contactDetails, monthlyRent } = req.body;
     name = name?.trim();
     owner = owner?.trim();
     email = email?.trim().toLowerCase();
@@ -49,7 +51,11 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
     // Create a store record
     const store = await prisma.store.create({
-      data: { name }
+      data: { 
+        name,
+        contactDetails,
+        monthlyRent: monthlyRent ? parseFloat(monthlyRent) : null
+      }
     });
 
     const user = await prisma.user.create({
@@ -65,10 +71,12 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     res.status(201).json({ 
       success: true, 
       data: {
-        id: user.id,
+        id: store.id,
         name,
         owner: user.name,
         email: user.email,
+        contactDetails: store.contactDetails,
+        monthlyRent: store.monthlyRent,
         status: user.status
       } 
     });
