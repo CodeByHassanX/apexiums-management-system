@@ -1,7 +1,5 @@
 ﻿{
-  "builds": [
-    { "src": "api_handler/index.ts", "use": "@vercel/node" }
-  ],
+  "version": 2,
   "rewrites": [
     {
       "source": "/(.*)",
