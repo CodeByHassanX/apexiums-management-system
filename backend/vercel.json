@@ -1,8 +1,11 @@
 ﻿{
+  "builds": [
+    { "src": "api_handler/index.ts", "use": "@vercel/node" }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/api_handler/index.ts"
     }
   ]
 }
