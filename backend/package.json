@@ -5,7 +5,7 @@
     "scripts":  {
                     "test":  "echo \"Error: no test specified\" \u0026\u0026 exit 1",
                     "dev":  "tsx watch src/server.ts",
-                    "build":  "tsc",
+                    "build":  "echo \u0027Build skipped for Vercel Serverless Function\u0027",
                     "start":  "node dist/server.js",
                     "seed":  "tsx prisma/seed.ts",
                     "postinstall":  "prisma generate"
