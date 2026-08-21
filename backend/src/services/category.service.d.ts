@@ -15,7 +15,7 @@ export declare class CategoryService {
             image: string | null;
             status: string;
             parentId: string | null;
-        } | null;
+        };
     } & {
         id: string;
         name: string;

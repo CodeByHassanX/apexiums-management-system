@@ -18,7 +18,7 @@ export declare class FinanceService {
                     creditLimit: import("@prisma/client/runtime/library").Decimal;
                     status: string;
                     storeId: string | null;
-                } | null;
+                };
             } & {
                 id: string;
                 customerId: string | null;

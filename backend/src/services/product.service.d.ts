@@ -4,7 +4,7 @@ export declare class ProductService {
             brand: {
                 id: string;
                 name: string;
-            } | null;
+            };
             category: {
                 id: string;
                 name: string;
@@ -52,7 +52,7 @@ export declare class ProductService {
         brand: {
             id: string;
             name: string;
-        } | null;
+        };
         category: {
             id: string;
             name: string;
