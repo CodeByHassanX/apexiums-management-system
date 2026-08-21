@@ -1,0 +1,332 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User & Auth
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String?
+  password  String
+  avatar    String?
+  status    String   @default("ACTIVE") // ACTIVE, INACTIVE, SUSPENDED
+  lastLogin DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  storeId   String?
+  store     Store?   @relation(fields: [storeId], references: [id])
+
+  roleId    String
+  role      Role     @relation(fields: [roleId], references: [id])
+
+  sales     Sale[]
+  inventoryAdjustments InventoryTransaction[]
+  auditLogs AuditLog[]
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique // SUPER_ADMIN, ADMIN, MANAGER, CASHIER, etc.
+  description String?
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  action      String   @unique // e.g., 'products.view', 'sales.create'
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+// Store & Branch
+model Store {
+  id        String   @id @default(uuid())
+  name      String
+  branches  Branch[]
+  users     User[]
+  sales     Sale[]
+  customers Customer[]
+  suppliers Supplier[]
+  purchases Purchase[]
+  expenses  Expense[]
+  incomes   Income[]
+  transactions FinancialTransaction[]
+  notifications Notification[]
+  auditLogs AuditLog[]
+}
+
+model Branch {
+  id        String   @id @default(uuid())
+  name      String
+  address   String?
+  storeId   String
+  store     Store    @relation(fields: [storeId], references: [id])
+  inventory Inventory[]
+}
+
+// Catalog
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  image       String?
+  status      String    @default("ACTIVE")
+  parentId    String?
+  parent      Category? @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryHierarchy")
+  products    Product[]
+}
+
+model Brand {
+  id          String    @id @default(uuid())
+  name        String
+  products    Product[]
+}
+
+model Product {
+  id            String   @id @default(uuid())
+  sku           String   @unique
+  barcode       String?  @unique
+  name          String
+  description   String?
+  categoryId    String
+  brandId       String?
+  unit          String   @default("pcs") // pcs, kg, box
+  costPrice     Decimal
+  sellingPrice  Decimal
+  discount      Decimal  @default(0)
+  tax           Decimal  @default(0)
+  status        String   @default("ACTIVE")
+  image         String?
+  minimumStock  Int      @default(0)
+  maximumStock  Int?
+  expiryDate    DateTime?
+
+  category      Category @relation(fields: [categoryId], references: [id])
+  brand         Brand?   @relation(fields: [brandId], references: [id])
+  supplierId    String?
+  supplier      Supplier? @relation(fields: [supplierId], references: [id])
+
+  inventory     Inventory[]
+  inventoryTransactions InventoryTransaction[]
+  saleItems     SaleItem[]
+  purchaseItems PurchaseItem[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// Inventory
+model Inventory {
+  id          String   @id @default(uuid())
+  productId   String
+  branchId    String
+  quantity    Int      @default(0)
+
+  product     Product  @relation(fields: [productId], references: [id])
+  branch      Branch   @relation(fields: [branchId], references: [id])
+
+  @@unique([productId, branchId])
+}
+
+model InventoryTransaction {
+  id          String   @id @default(uuid())
+  productId   String
+  type        String   // PURCHASE, SALE, RETURN, ADJUSTMENT, DAMAGE, EXPIRED, TRANSFER, INITIAL_STOCK
+  quantity    Int      // Positive for addition, negative for deduction
+  reason      String?
+  referenceId String?  // ID of the Sale, Purchase, etc.
+  userId      String
+  createdAt   DateTime @default(now())
+
+  product     Product  @relation(fields: [productId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+// Purchasing
+model Supplier {
+  id             String    @id @default(uuid())
+  name           String
+  company        String?
+  phone          String?
+  email          String?
+  address        String?
+  taxNumber      String?
+  openingBalance Decimal   @default(0)
+  status         String    @default("ACTIVE")
+  products       Product[]
+  purchases      Purchase[]
+
+  storeId        String?
+  store          Store?    @relation(fields: [storeId], references: [id])
+}
+
+model Purchase {
+  id            String   @id @default(uuid())
+  supplierId    String
+  status        String   // DRAFT, PENDING, RECEIVED, PARTIALLY_PAID, PAID, CANCELLED
+  totalAmount   Decimal
+  taxAmount     Decimal  @default(0)
+  discountAmount Decimal @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  supplier      Supplier @relation(fields: [supplierId], references: [id])
+  items         PurchaseItem[]
+
+  storeId       String?
+  store         Store?    @relation(fields: [storeId], references: [id])
+}
+
+model PurchaseItem {
+  id          String   @id @default(uuid())
+  purchaseId  String
+  productId   String
+  quantity    Int
+  costPrice   Decimal
+  tax         Decimal  @default(0)
+  discount    Decimal  @default(0)
+
+  purchase    Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id])
+}
+
+// Sales & POS
+model Customer {
+  id             String   @id @default(uuid())
+  name           String
+  phone          String?
+  email          String?
+  address        String?
+  openingBalance Decimal  @default(0)
+  creditLimit    Decimal  @default(0)
+  status         String   @default("ACTIVE")
+  sales          Sale[]
+
+  storeId        String?
+  store          Store?    @relation(fields: [storeId], references: [id])
+}
+
+model Sale {
+  id            String   @id @default(uuid())
+  customerId    String?
+  userId        String
+  status        String   // COMPLETED, HELD, CANCELLED, REFUNDED
+  totalAmount   Decimal
+  taxAmount     Decimal  @default(0)
+  discountAmount Decimal @default(0)
+  createdAt     DateTime @default(now())
+
+  storeId       String?
+  store         Store?    @relation(fields: [storeId], references: [id])
+
+  customer      Customer? @relation(fields: [customerId], references: [id])
+  user          User      @relation(fields: [userId], references: [id])
+  items         SaleItem[]
+  payments      Payment[]
+}
+
+model SaleItem {
+  id          String   @id @default(uuid())
+  saleId      String
+  productId   String
+  quantity    Int
+  sellingPrice Decimal
+  tax         Decimal  @default(0)
+  discount    Decimal  @default(0)
+
+  sale        Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product     Product  @relation(fields: [productId], references: [id])
+}
+
+model Payment {
+  id            String   @id @default(uuid())
+  saleId        String
+  method        String   // CASH, CARD, BANK, CREDIT, OTHER
+  amount        Decimal
+  createdAt     DateTime @default(now())
+
+  sale          Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+}
+
+// Finance
+model Expense {
+  id          String   @id @default(uuid())
+  category    String   // RENT, ELECTRICITY, SALARY, etc.
+  amount      Decimal
+  description String?
+  date        DateTime
+  createdAt   DateTime @default(now())
+
+  storeId     String?
+  store       Store?    @relation(fields: [storeId], references: [id])
+}
+
+model Income {
+  id          String   @id @default(uuid())
+  category    String   // SALES, OTHER
+  amount      Decimal
+  description String?
+  date        DateTime
+  createdAt   DateTime @default(now())
+
+  storeId     String?
+  store       Store?    @relation(fields: [storeId], references: [id])
+}
+
+model FinancialTransaction {
+  id          String   @id @default(uuid())
+  type        String   // INCOME, EXPENSE
+  amount      Decimal
+  referenceId String?
+  description String?
+  date        DateTime @default(now())
+
+  storeId     String?
+  store       Store?    @relation(fields: [storeId], references: [id])
+}
+
+// System
+model Notification {
+  id          String   @id @default(uuid())
+  type        String   // LOW_STOCK, DEBT_DUE, etc.
+  message     String
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  storeId     String?
+  store       Store?    @relation(fields: [storeId], references: [id])
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  userId      String
+  action      String   // CREATE, UPDATE, DELETE, etc.
+  module      String   // User, Product, Sale, etc.
+  recordId    String
+  oldValue    String?  @db.Text
+  newValue    String?  @db.Text
+  ip          String?
+  createdAt   DateTime @default(now())
+
+  storeId     String?
+  store       Store?    @relation(fields: [storeId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+}
