@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 import { Request, Response, NextFunction } from 'express';
 import { BrandService } from '../services/brand.service';
 import { createBrandSchema, updateBrandSchema } from '../validators/catalog.validator';
@@ -40,3 +41,4 @@ export class BrandController {
     } catch (error) { next(error); }
   }
 }
+

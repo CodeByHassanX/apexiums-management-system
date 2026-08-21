@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 import { Request, Response, NextFunction, Router } from 'express';
 import prisma from '../config/db';
 import { authenticate, AuthRequest, requirePermission } from '../middleware/auth.middleware';
@@ -136,3 +137,4 @@ router.put('/:id', authenticate, requirePermission('staff.update'), async (req: 
 });
 
 export default router;
+

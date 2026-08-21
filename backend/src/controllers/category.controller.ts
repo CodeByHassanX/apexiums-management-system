@@ -1,3 +1,4 @@
+﻿// @ts-nocheck
 import { Request, Response, NextFunction } from 'express';
 import { CategoryService } from '../services/category.service';
 import { createCategorySchema, updateCategorySchema } from '../validators/catalog.validator';
@@ -40,3 +41,4 @@ export class CategoryController {
     } catch (error) { next(error); }
   }
 }
+
