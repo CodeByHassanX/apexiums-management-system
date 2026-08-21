@@ -18,7 +18,7 @@ export default function StoresPage() {
   const toggleStoreStatus = async (id: string, currentStatus: string) => {
     try {
       const newStatus = currentStatus === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
-      await api.put(`/tenants/${id}/status`, { status: newStatus });
+      await api.put(`/stores/${id}/status`, { status: newStatus });
       fetchStores();
     } catch (error) {
       console.error(error);
