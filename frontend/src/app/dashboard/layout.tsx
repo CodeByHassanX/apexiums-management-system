@@ -65,17 +65,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const isActive = pathname === path;
     return (
       <div 
-        className={`flex items-center space-x-3 p-3 rounded-xl cursor-pointer transition-all duration-200 group ${
+        className={`flex items-center space-x-3 px-4 py-3.5 rounded-xl cursor-pointer transition-all duration-200 group ${
           isActive 
-            ? 'bg-[#1c3633] text-[#8ae8dd] font-bold' 
-            : 'text-gray-300 hover:bg-white/5 hover:text-white font-medium'
+            ? 'bg-[#e6f7f5] text-[#12b4a3] font-bold shadow-sm' 
+            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 font-medium'
         }`} 
         onClick={() => { router.push(path); setIsMobileMenuOpen(false); }}
       >
-        <div className={`${isActive ? 'text-[#8ae8dd]' : 'text-gray-400 group-hover:text-[#8ae8dd]'} transition-colors`}>
+        <div className={`${isActive ? 'text-[#12b4a3]' : 'text-gray-400 group-hover:text-[#12b4a3]'} transition-colors`}>
           {icon}
         </div>
-        <span>{label}</span>
+        <span className="truncate">{label}</span>
       </div>
     );
   };
@@ -92,18 +92,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#1b2028] shadow-2xl transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:flex md:flex-col ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex items-center justify-between h-24 px-6 border-b border-white/5 bg-[#1b2028] shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-gradient-to-br from-[#12b4a3] to-[#0e9082] rounded-xl flex items-center justify-center shadow-lg shadow-[#12b4a3]/30">
+      <div className={`fixed inset-y-0 left-0 z-40 w-72 bg-white border-r border-gray-200 text-gray-900 shadow-2xl transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:flex md:flex-col ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="p-6 h-24 border-b border-gray-200 flex justify-between items-center bg-white shrink-0">
+          <div className="flex items-center space-x-3">
+            <div className="h-10 w-10 bg-[#12b4a3] rounded-xl flex items-center justify-center shadow-lg shadow-[#12b4a3]/30">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-black text-white tracking-tight leading-tight">APEXIUMS</span>
-              <span className="text-xs text-[#8ae8dd] font-medium mt-0.5">{user?.name ? `${user.name}'s Branch` : "Store Branch"}</span>
+              <span className="text-xl font-bold tracking-tight text-gray-900 leading-tight">APEXIUMS</span>
+              <span className="text-xs text-[#12b4a3] font-bold mt-0.5">{user?.name ? `${user.name}'s Branch` : "Store Branch"}</span>
             </div>
           </div>
-          <button className="md:hidden text-gray-400 hover:text-white transition p-2 rounded-lg hover:bg-white/5" onClick={() => setIsMobileMenuOpen(false)}>
+          <button className="md:hidden text-gray-400 hover:text-gray-900 transition p-2 rounded-lg hover:bg-gray-100" onClick={() => setIsMobileMenuOpen(false)}>
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
@@ -172,18 +172,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           )}
         </div>
 
-        <div className="p-4 bg-[#1b2028] shrink-0">
-          <div className="bg-[#242a33] p-4 rounded-xl flex items-center justify-between group cursor-pointer border border-white/5 hover:border-white/10 transition">
+        <div className="p-4 bg-white shrink-0 border-t border-gray-200">
+          <div className="bg-gray-50 p-4 rounded-xl flex items-center justify-between group cursor-pointer border border-gray-200 hover:border-gray-300 transition">
             <div className="flex items-center gap-3 overflow-hidden">
               <div className="h-9 w-9 rounded-full bg-[#12b4a3] flex items-center justify-center text-white font-bold text-sm shrink-0 uppercase">
                 {user.name.charAt(0)}
               </div>
               <div className="overflow-hidden">
-                <div className="text-sm font-bold text-white truncate leading-tight">{user.name}</div>
+                <div className="text-sm font-bold text-gray-900 truncate leading-tight">{user.name}</div>
                 <div className="text-xs text-[#12b4a3] font-semibold truncate mt-0.5 capitalize">{user.role?.toLowerCase() || 'Manager'}</div>
               </div>
             </div>
-            <button onClick={() => { logout(); router.push('/login'); }} className="text-gray-400 hover:text-white transition p-1" title="Log out">
+            <button onClick={() => { logout(); router.push('/login'); }} className="text-gray-400 hover:text-gray-900 transition p-1" title="Log out">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
             </button>
           </div>
