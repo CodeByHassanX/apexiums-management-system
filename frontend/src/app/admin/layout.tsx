@@ -11,7 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const NavItem = ({ label, path, icon }: { label: string, path: string, icon: React.ReactNode }) => {
-    const isActive = pathname === path || pathname.startsWith(path + '/');
+    const isActive = path === '/admin' ? pathname === path : (pathname === path || pathname.startsWith(path + '/'));
     return (
       <div 
         className={`flex items-center space-x-3 px-4 py-3.5 rounded-xl cursor-pointer transition-all duration-200 group ${
