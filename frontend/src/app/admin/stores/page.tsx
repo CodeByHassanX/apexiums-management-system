@@ -6,7 +6,7 @@ import api from "@/lib/api";
 export default function StoresPage() {
   const [stores, setStores] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [newStore, setNewStore] = useState({ name: "", owner: "", email: "", password: "" });
+  const [newStore, setNewStore] = useState({ name: "", owner: "", email: "", password: "", contactDetails: "", monthlyRent: "" });
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState("");
@@ -33,7 +33,7 @@ export default function StoresPage() {
     try {
       await api.post('/stores', newStore);
       setShowModal(false);
-      setNewStore({ name: "", owner: "", email: "", password: "" });
+      setNewStore({ name: "", owner: "", email: "", password: "", contactDetails: "", monthlyRent: "" });
       fetchStores();
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to create store");
@@ -63,6 +63,8 @@ export default function StoresPage() {
             <tr>
               <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Store Name</th>
               <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Manager / Owner</th>
+              <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Contact Details</th>
+              <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Monthly Rent</th>
               <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Login Email</th>
               <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Status</th>
             </tr>
@@ -72,6 +74,8 @@ export default function StoresPage() {
               <tr key={store.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 font-bold text-gray-900">{store.name}</td>
                 <td className="px-6 py-4 text-sm text-gray-600">{store.owner}</td>
+                <td className="px-6 py-4 text-sm text-gray-600">{store.contactDetails}</td>
+                <td className="px-6 py-4 text-sm text-gray-600">{store.monthlyRent ? `$${store.monthlyRent}` : 'N/A'}</td>
                 <td className="px-6 py-4 text-sm text-[#12b4a3] font-medium">{store.email}</td>
                 <td className="px-6 py-4"><span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold">{store.status}</span></td>
               </tr>
@@ -88,7 +92,7 @@ export default function StoresPage() {
             {error && <div className="mb-4 bg-red-50 text-red-600 text-sm p-3 rounded-lg font-bold">{error}</div>}
             <form onSubmit={handleCreate} className="space-y-4">
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Store/Business Name</label>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Store Name</label>
                 <input required value={newStore.name} onChange={e => setNewStore({...newStore, name: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="e.g. Apex Tech Store" />
               </div>
               <div>
@@ -96,11 +100,19 @@ export default function StoresPage() {
                 <input required value={newStore.owner} onChange={e => setNewStore({...newStore, owner: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="e.g. John Doe" />
               </div>
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Admin Email</label>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Contact Details</label>
+                <input required value={newStore.contactDetails} onChange={e => setNewStore({...newStore, contactDetails: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="Phone or Email" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Monthly Rent</label>
+                <input required type="number" step="0.01" value={newStore.monthlyRent} onChange={e => setNewStore({...newStore, monthlyRent: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="0.00" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Username (Email)</label>
                 <input required type="email" value={newStore.email} onChange={e => setNewStore({...newStore, email: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="admin@example.com" />
               </div>
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Initial Password</label>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Password</label>
                 <input required type="text" value={newStore.password} onChange={e => setNewStore({...newStore, password: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="Secure password" />
               </div>
               <div className="flex space-x-3 pt-4">
