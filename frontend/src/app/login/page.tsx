@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
+import { useAuthStore } from "@/store/authStore";
 
 export default function LoginPage() {
   const router = useRouter();
+  const loginAction = useAuthStore((state) => state.login);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -22,8 +24,7 @@ export default function LoginPage() {
       
       const { accessToken, refreshToken, user } = res.data.data;
       
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      loginAction(user, accessToken, refreshToken);
 
       // Route based on role
       if (user.role === 'SUPER_ADMIN') {
