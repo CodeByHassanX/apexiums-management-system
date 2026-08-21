@@ -48,7 +48,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-gray-900 leading-tight">Administrator</span>
+              <span className="text-xl font-bold tracking-tight text-gray-900 leading-tight">Super Admin</span>
             </div>
           </div>
           <button className="md:hidden text-gray-400 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition" onClick={() => setIsMobileMenuOpen(false)}>
@@ -90,7 +90,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 AD
               </div>
               <div className="overflow-hidden">
-                <div className="text-sm font-bold text-gray-900 truncate leading-tight">Administrator</div>
+                <div className="text-sm font-bold text-gray-900 truncate leading-tight">Super Admin</div>
                 <div className="text-xs text-gray-500 truncate mt-0.5">admin@example.com</div>
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   AD
                 </div>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mt-6">Administrator</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mt-6">Super Admin</h2>
               <p className="text-gray-500 font-medium">admin@example.com</p>
               
               <div className="w-full mt-8 space-y-3">
@@ -152,7 +152,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {pathname.split('/').pop() === 'admin' ? 'Dashboard' : pathname.split('/').pop()?.replace('-', ' ')}
               </h1>
               <p className="text-sm text-gray-400 font-medium mt-0.5">
-                Administrator Panel &bull; {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                Super Admin Panel &bull; {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
             </div>
             <div className="md:hidden text-xl font-bold text-gray-900">Admin</div>

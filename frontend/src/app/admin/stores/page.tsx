@@ -87,37 +87,37 @@ export default function StoresPage() {
       {/* Create Store Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl">
-            <h3 className="text-xl font-bold text-gray-900 mb-6">Register New Store</h3>
-            {error && <div className="mb-4 bg-red-50 text-red-600 text-sm p-3 rounded-lg font-bold">{error}</div>}
-            <form onSubmit={handleCreate} className="space-y-4">
+          <div className="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto scrollbar-hide">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Register New Store</h3>
+            {error && <div className="mb-3 bg-red-50 text-red-600 text-sm p-3 rounded-lg font-bold">{error}</div>}
+            <form onSubmit={handleCreate} className="space-y-3">
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">Store Name</label>
-                <input required value={newStore.name} onChange={e => setNewStore({...newStore, name: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="e.g. Apex Tech Store" />
+                <input required value={newStore.name} onChange={e => setNewStore({...newStore, name: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="e.g. Apex Tech Store" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">Owner Name</label>
-                <input required value={newStore.owner} onChange={e => setNewStore({...newStore, owner: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="e.g. John Doe" />
+                <input required value={newStore.owner} onChange={e => setNewStore({...newStore, owner: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="e.g. John Doe" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">Contact Details</label>
-                <input required value={newStore.contactDetails} onChange={e => setNewStore({...newStore, contactDetails: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="Phone or Email" />
+                <input required value={newStore.contactDetails} onChange={e => setNewStore({...newStore, contactDetails: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="Phone or Email" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">Monthly Rent</label>
-                <input required type="number" step="0.01" value={newStore.monthlyRent} onChange={e => setNewStore({...newStore, monthlyRent: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="0.00" />
+                <input required type="number" step="0.01" value={newStore.monthlyRent} onChange={e => setNewStore({...newStore, monthlyRent: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="0.00" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">Username (Email)</label>
-                <input required type="email" value={newStore.email} onChange={e => setNewStore({...newStore, email: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="admin@example.com" />
+                <input required type="email" value={newStore.email} onChange={e => setNewStore({...newStore, email: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="admin@example.com" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">Password</label>
-                <input required type="text" value={newStore.password} onChange={e => setNewStore({...newStore, password: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="Secure password" />
+                <input required type="text" value={newStore.password} onChange={e => setNewStore({...newStore, password: e.target.value})} className="w-full border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[#12b4a3] focus:outline-none" placeholder="Secure password" />
               </div>
-              <div className="flex space-x-3 pt-4">
-                <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition">Cancel</button>
-                <button type="submit" disabled={creating} className="flex-1 px-4 py-3 bg-[#12b4a3] text-white font-bold rounded-xl hover:bg-[#0e9082] transition disabled:opacity-50">
+              <div className="flex space-x-3 pt-3">
+                <button type="button" onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition">Cancel</button>
+                <button type="submit" disabled={creating} className="flex-1 px-4 py-2.5 bg-[#12b4a3] text-white font-bold rounded-xl hover:bg-[#0e9082] transition disabled:opacity-50">
                   {creating ? "Creating..." : "Create Store"}
                 </button>
               </div>
