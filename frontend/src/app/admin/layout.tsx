@@ -1,47 +1,23 @@
-"use client";
+'use client';
 
-import { useRouter, usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import React, { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const pathname = usePathname();
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    if (pathname !== '/admin/login') {
-      const auth = sessionStorage.getItem('superAdmin');
-      if (!auth) {
-        router.push('/admin/login');
-      } else {
-        setIsAuth(true);
-      }
-    } else {
-      setIsAuth(true); // Let them see login page
-    }
-  }, [pathname, router]);
-
-  if (!mounted || !isAuth) return null;
-
-  if (pathname === '/admin/login') {
-    return <>{children}</>;
-  }
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const NavItem = ({ label, path, icon }: { label: string, path: string, icon: React.ReactNode }) => {
-    const isActive = pathname === path;
+    const isActive = pathname === path || pathname.startsWith(path + '/');
     return (
       <div 
-        className={`flex items-center space-x-3 p-3 rounded-xl cursor-pointer transition-all duration-200 group ${
-          isActive 
-            ? 'bg-[#1c3633] text-[#8ae8dd] font-bold' 
-            : 'text-gray-300 hover:bg-white/5 hover:text-white font-medium'
-        }`} 
+        className={lex items-center space-x-3 px-4 py-3.5 rounded-xl cursor-pointer transition-all duration-200 group } 
         onClick={() => { router.push(path); setIsMobileMenuOpen(false); }}
       >
-        <div className={`${isActive ? 'text-[#8ae8dd]' : 'text-gray-400 group-hover:text-[#8ae8dd]'} transition-colors`}>
+        <div className={${isActive ? 'text-[#12b4a3]' : 'text-gray-400 group-hover:text-[#12b4a3]'} transition-colors}>
           {icon}
         </div>
         <span>{label}</span>
@@ -61,18 +37,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-[#1b2028] text-white flex flex-col transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="p-6 h-24 border-b border-gray-800 flex justify-between items-center bg-[#1b2028] shrink-0">
+      <div className={ixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-gray-200 text-gray-900 flex flex-col transition-transform duration-300 ease-in-out md:relative md:translate-x-0 }>
+        <div className="p-6 h-24 border-b border-gray-200 flex justify-between items-center bg-white shrink-0">
           <div className="flex items-center space-x-3">
             <div className="h-10 w-10 bg-[#12b4a3] rounded-xl flex items-center justify-center shadow-lg shadow-[#12b4a3]/30">
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight text-white leading-tight">Super Admin</span>
-              <span className="text-xs text-[#8ae8dd] font-medium">HQ Management</span>
+              <span className="text-xl font-bold tracking-tight text-gray-900 leading-tight">Administrator</span>
             </div>
           </div>
-          <button className="md:hidden text-gray-400 hover:text-white p-2 rounded-lg hover:bg-white/5 transition" onClick={() => setIsMobileMenuOpen(false)}>
+          <button className="md:hidden text-gray-400 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition" onClick={() => setIsMobileMenuOpen(false)}>
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
@@ -101,28 +76,63 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* User Profile Footer inside Sidebar */}
-        <div className="p-4 bg-[#1b2028] shrink-0">
-          <div className="bg-[#242a33] p-4 rounded-xl flex items-center justify-between group cursor-pointer border border-white/5 hover:border-white/10 transition">
+        <div className="p-4 bg-white shrink-0 border-t border-gray-200">
+          <div 
+            onClick={() => setIsProfileModalOpen(true)}
+            className="bg-gray-50 p-4 rounded-xl flex items-center justify-between group cursor-pointer border border-gray-200 hover:border-gray-300 transition"
+          >
             <div className="flex items-center space-x-3 overflow-hidden">
               <div className="h-10 w-10 bg-[#12b4a3] text-white rounded-full flex items-center justify-center font-bold shadow-inner shrink-0 text-sm">
-                SA
+                AD
               </div>
               <div className="overflow-hidden">
-                <div className="text-sm font-bold text-white truncate leading-tight">Super Admin</div>
-                <div className="text-xs text-gray-400 truncate mt-0.5">super@APEXIUMS.com</div>
+                <div className="text-sm font-bold text-gray-900 truncate leading-tight">Administrator</div>
+                <div className="text-xs text-gray-500 truncate mt-0.5">admin@example.com</div>
               </div>
             </div>
-            <button onClick={() => { 
+            <button onClick={(e) => { 
+              e.stopPropagation();
               sessionStorage.removeItem('superAdmin'); 
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
               router.push('/admin/login'); 
-            }} className="text-gray-400 hover:text-white transition p-1" title="Log out">
+            }} className="text-gray-400 hover:text-red-500 transition p-1" title="Log out">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
             </button>
           </div>
         </div>
       </div>
+
+      {/* Profile Modal */}
+      {isProfileModalOpen && (
+        <div className="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden relative animate-in fade-in zoom-in-95 duration-200">
+            <div className="h-24 bg-gradient-to-r from-[#12b4a3] to-[#8ae8dd]"></div>
+            <div className="px-6 py-8 relative flex flex-col items-center">
+              <div className="h-20 w-20 bg-white rounded-full p-1 absolute -top-10 shadow-lg">
+                <div className="w-full h-full bg-[#12b4a3] rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                  AD
+                </div>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mt-6">Administrator</h2>
+              <p className="text-gray-500 font-medium">admin@example.com</p>
+              
+              <div className="w-full mt-8 space-y-3">
+                <button className="w-full py-3 px-4 bg-gray-50 hover:bg-gray-100 text-gray-900 font-medium rounded-xl border border-gray-200 transition-colors flex items-center justify-center space-x-2">
+                  <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                  <span>Account Settings</span>
+                </button>
+                <button 
+                  onClick={() => setIsProfileModalOpen(false)}
+                  className="w-full py-3 px-4 bg-[#12b4a3] hover:bg-[#0e9688] text-white font-medium rounded-xl shadow-md transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
@@ -138,7 +148,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {pathname.split('/').pop() === 'admin' ? 'Dashboard' : pathname.split('/').pop()?.replace('-', ' ')}
               </h1>
               <p className="text-sm text-gray-400 font-medium mt-0.5">
-                Super Admin Panel &bull; {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                Administrator Panel &bull; {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
             </div>
             <div className="md:hidden text-xl font-bold text-gray-900">Admin</div>
@@ -162,4 +172,3 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </div>
   );
 }
-
