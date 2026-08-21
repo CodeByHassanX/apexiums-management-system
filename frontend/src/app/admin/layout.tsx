@@ -14,10 +14,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const isActive = pathname === path || pathname.startsWith(path + '/');
     return (
       <div 
-        className={lex items-center space-x-3 px-4 py-3.5 rounded-xl cursor-pointer transition-all duration-200 group } 
+        className={`flex items-center space-x-3 px-4 py-3.5 rounded-xl cursor-pointer transition-all duration-200 group ${
+          isActive 
+            ? 'bg-[#e6f7f5] text-[#12b4a3] font-bold shadow-sm' 
+            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 font-medium'
+        }`} 
         onClick={() => { router.push(path); setIsMobileMenuOpen(false); }}
       >
-        <div className={${isActive ? 'text-[#12b4a3]' : 'text-gray-400 group-hover:text-[#12b4a3]'} transition-colors}>
+        <div className={`${isActive ? 'text-[#12b4a3]' : 'text-gray-400 group-hover:text-[#12b4a3]'} transition-colors`}>
           {icon}
         </div>
         <span>{label}</span>
@@ -37,7 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       )}
 
       {/* Sidebar */}
-      <div className={ixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-gray-200 text-gray-900 flex flex-col transition-transform duration-300 ease-in-out md:relative md:translate-x-0 }>
+      <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-gray-200 text-gray-900 flex flex-col transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="p-6 h-24 border-b border-gray-200 flex justify-between items-center bg-white shrink-0">
           <div className="flex items-center space-x-3">
             <div className="h-10 w-10 bg-[#12b4a3] rounded-xl flex items-center justify-center shadow-lg shadow-[#12b4a3]/30">
